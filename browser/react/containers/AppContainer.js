@@ -12,11 +12,25 @@ import Player from '../components/Player';
 
 import { convertAlbum, convertAlbums, convertSong, skip } from '../utils';
 
+import {
+  play,
+  pause,
+  load,
+  startSong,
+  toggle,
+  toggleOne,
+  next,
+  prev
+} from '../action-creators/player';
+
+import store from '../store';
+
 export default class AppContainer extends Component {
 
   constructor (props) {
     super(props);
-    this.state = initialState;
+
+    this.state = Object.assign(initialState, store.getState());
 
     this.toggle = this.toggle.bind(this);
     this.toggleOne = this.toggleOne.bind(this);
@@ -45,6 +59,10 @@ export default class AppContainer extends Component {
       this.next());
     AUDIO.addEventListener('timeupdate', () =>
       this.setProgress(AUDIO.currentTime / AUDIO.duration));
+
+      this.unsubscribe = store.subscribe(() => {
+        this.setState(store.getState());
+      });
   }
 
   onLoad (albums, artists, playlists) {
@@ -56,47 +74,35 @@ export default class AppContainer extends Component {
   }
 
   play () {
-    AUDIO.play();
-    this.setState({ isPlaying: true });
+    store.dispatch(play());
   }
 
   pause () {
-    AUDIO.pause();
-    this.setState({ isPlaying: false });
+    store.dispatch(pause());
   }
 
   load (currentSong, currentSongList) {
-    AUDIO.src = currentSong.audioUrl;
-    AUDIO.load();
-    this.setState({
-      currentSong: currentSong,
-      currentSongList: currentSongList
-    });
+    store.dispatch(load(currentSong, currentSongList));
   }
 
   startSong (song, list) {
-    this.pause();
-    this.load(song, list);
-    this.play();
+    store.dispatch(startSong(song, list));
   }
 
   toggleOne (selectedSong, selectedSongList) {
-    if (selectedSong.id !== this.state.currentSong.id)
-      this.startSong(selectedSong, selectedSongList);
-    else this.toggle();
+    store.dispatch(toggleOne(selectedSong, selectedSongList));
   }
 
   toggle () {
-    if (this.state.isPlaying) this.pause();
-    else this.play();
+    store.dispatch(toggle());
   }
 
   next () {
-    this.startSong(...skip(1, this.state));
+    store.dispatch(next());
   }
 
   prev () {
-    this.startSong(...skip(-1, this.state));
+    store.dispatch(prev());
   }
 
   setProgress (progress) {
@@ -207,9 +213,9 @@ export default class AppContainer extends Component {
         }
         </div>
         <Player
-          currentSong={this.state.currentSong}
-          currentSongList={this.state.currentSongList}
-          isPlaying={this.state.isPlaying}
+          currentSong={this.state.player.currentSong}
+          currentSongList={this.state.player.currentSongList}
+          isPlaying={this.state.player.isPlaying}
           progress={this.state.progress}
           next={this.next}
           prev={this.prev}

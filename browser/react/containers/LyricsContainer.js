@@ -40,17 +40,7 @@ export default class extends Component {
   }
 
   handleSubmit(event) {
-
-    // event.preventDefault();
-    // if (this.state.artistQuery && this.state.songQuery) {
-    //
-    //   axios.get(`/api/lyrics/${this.state.artistQuery}/${this.state.songQuery}`)
-    //     .then(response => {
-    //       const setLyricsAction = setLyrics(response.data.lyric);
-    //       store.dispatch(setLyricsAction);
-    //     });
-    //
-    // }
+    event.preventDefault();
     if (this.state.artistQuery && this.state.songQuery) {
       store.dispatch(fetchLyrics(this.state.artistQuery, this.state.songQuery));
     }
@@ -58,7 +48,7 @@ export default class extends Component {
 
   render() {
     return <Lyrics
-      text={this.state.text}
+      text={this.state.lyrics.text}
       setArtist={this.handleArtistInput}
       setSong={this.handleSongInput}
       artistQuery={this.state.artistQuery}
