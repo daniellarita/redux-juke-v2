@@ -21,8 +21,16 @@ import {
   toggleOne,
   next,
   prev,
-  setProgress
+  setProgress,
 } from '../action-creators/player';
+
+import {fetchAlbums,
+
+} from '../action-creators/albums';
+
+import {fetchArtists,
+
+} from '../action-creators/artists';
 
 import store from '../store';
 
@@ -46,6 +54,8 @@ export default class AppContainer extends Component {
   }
 
   componentDidMount () {
+    store.dispatch(fetchAlbums());
+    store.dispatch(fetchArtists());
 
     Promise
       .all([
@@ -68,10 +78,12 @@ export default class AppContainer extends Component {
 
   onLoad (albums, artists, playlists) {
     this.setState({
-      albums: convertAlbums(albums),
-      artists: artists,
+
+      // artists: artists,
       playlists: playlists
     });
+    // store.dispatch(fetchArtists());
+    // store.dispatch(fetchPlaylists());
   }
 
   play () {
@@ -192,7 +204,9 @@ export default class AppContainer extends Component {
 
   render () {
 
-    const props = Object.assign({}, this.state, {
+    const props = Object.assign({}, {
+      albums: this.state.albums.list,
+      artists: this.state.artists.list,
       toggleOne: this.toggleOne,
       toggle: this.toggle,
       selectAlbum: this.selectAlbum,

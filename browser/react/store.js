@@ -5,6 +5,8 @@ import thunkMiddleware from 'redux-thunk';
 import {combineReducers} from 'redux';
 import lyricsReducer from './reducers/lyrics-reducer';
 import playerReducer from './reducers/player-reducer';
+import albumsReducer from './reducers/albums-reducer';
+import artistsReducer from './reducers/artists-reducer';
 
 const middleware = applyMiddleware(
   createLogger(),
@@ -13,7 +15,9 @@ const middleware = applyMiddleware(
 
 const reducers = combineReducers({
   lyrics: lyricsReducer,
-  player: playerReducer
+  player: playerReducer,
+  albums: albumsReducer,
+  artists: artistsReducer
 });
 
 export default createStore(reducers, middleware);
