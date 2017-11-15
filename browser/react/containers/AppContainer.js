@@ -20,7 +20,8 @@ import {
   toggle,
   toggleOne,
   next,
-  prev
+  prev,
+  setProgress
 } from '../action-creators/player';
 
 import store from '../store';
@@ -106,7 +107,7 @@ export default class AppContainer extends Component {
   }
 
   setProgress (progress) {
-    this.setState({ progress: progress });
+    store.dispatch(setProgress(progress));
   }
 
   selectAlbum (albumId) {
@@ -216,7 +217,7 @@ export default class AppContainer extends Component {
           currentSong={this.state.player.currentSong}
           currentSongList={this.state.player.currentSongList}
           isPlaying={this.state.player.isPlaying}
-          progress={this.state.progress}
+          progress={this.state.player.progress}
           next={this.next}
           prev={this.prev}
           toggle={this.toggle}

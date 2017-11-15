@@ -27263,7 +27263,7 @@
 	  }, {
 	    key: 'setProgress',
 	    value: function setProgress(progress) {
-	      this.setState({ progress: progress });
+	      _store2.default.dispatch((0, _player.setProgress)(progress));
 	    }
 	  }, {
 	    key: 'selectAlbum',
@@ -27397,7 +27397,7 @@
 	          currentSong: this.state.player.currentSong,
 	          currentSongList: this.state.player.currentSongList,
 	          isPlaying: this.state.player.isPlaying,
-	          progress: this.state.progress,
+	          progress: this.state.player.progress,
 	          next: this.next,
 	          prev: this.prev,
 	          toggle: this.toggle
@@ -29406,7 +29406,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.prev = exports.next = exports.toggleOne = exports.toggle = exports.startSong = exports.load = exports.pause = exports.play = undefined;
+	exports.prev = exports.next = exports.toggleOne = exports.toggle = exports.startSong = exports.load = exports.pause = exports.play = exports.setProgress = undefined;
 	
 	var _constants = __webpack_require__(277);
 	
@@ -29441,6 +29441,13 @@
 	  return {
 	    type: _constants.SET_LIST,
 	    currentSongList: currentSongList
+	  };
+	};
+	
+	var setProgress = exports.setProgress = function setProgress(progress) {
+	  return {
+	    type: _constants.SET_PROGRESS,
+	    progress: progress
 	  };
 	};
 	
@@ -30706,6 +30713,10 @@
 	
 	    case _constants.STOP_PLAYING:
 	      newState.isPlaying = false;
+	      break;
+	
+	    case _constants.SET_PROGRESS:
+	      newState.progress = action.progress;
 	      break;
 	
 	    default:

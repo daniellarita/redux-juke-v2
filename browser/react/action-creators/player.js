@@ -22,6 +22,11 @@ const setCurrentSongList = (currentSongList) => ({
   currentSongList
 });
 
+export const setProgress = (progress) => ({
+  type: SET_PROGRESS,
+  progress
+});
+
 export const play = function() {
   return function(dispatch, getState){
     AUDIO.play();
