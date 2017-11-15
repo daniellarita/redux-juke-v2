@@ -32,6 +32,10 @@ import {fetchArtists,
 
 } from '../action-creators/artists';
 
+import {fetchPlaylists,
+
+} from '../action-creators/playlists';
+
 import store from '../store';
 
 export default class AppContainer extends Component {
@@ -56,6 +60,7 @@ export default class AppContainer extends Component {
   componentDidMount () {
     store.dispatch(fetchAlbums());
     store.dispatch(fetchArtists());
+    store.dispatch(fetchPlaylists());
 
     Promise
       .all([
@@ -77,13 +82,7 @@ export default class AppContainer extends Component {
   }
 
   onLoad (albums, artists, playlists) {
-    this.setState({
 
-      // artists: artists,
-      playlists: playlists
-    });
-    // store.dispatch(fetchArtists());
-    // store.dispatch(fetchPlaylists());
   }
 
   play () {
@@ -207,6 +206,7 @@ export default class AppContainer extends Component {
     const props = Object.assign({}, {
       albums: this.state.albums.list,
       artists: this.state.artists.list,
+      playlists: this.state.playlists.list,
       toggleOne: this.toggleOne,
       toggle: this.toggle,
       selectAlbum: this.selectAlbum,
@@ -220,7 +220,7 @@ export default class AppContainer extends Component {
     return (
       <div id="main" className="container-fluid">
         <div className="col-xs-2">
-          <Sidebar playlists={this.state.playlists} />
+          <Sidebar playlists={this.state.playlists.list} />
         </div>
         <div className="col-xs-10">
         {
